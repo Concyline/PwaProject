@@ -254,15 +254,16 @@
 
     <!-- Conteúdo principal -->
     <main>
-        <h2>Bem-vindo! Versao 2.6</h2>
+        <h2>Bem-vindo! Versao 2.7</h2>
         <p>Agora com a paleta personalizada que você escolheu. O menu lateral ainda funciona como slide.</p>
 
         <a href="#" class="botao">Ação Principal</a>
         <a class="botao" id="btnLoader">Loader</a>
+        <a class="botao" onclick="mostrarNotificacao('Um teste de notificação')">Notificação</a>
 
 
         <button type="button" onclick="aqui()">soma</button>
-        
+
     </main>
 
     <!-- jQuery + interações -->
@@ -339,6 +340,40 @@
                 $('#loader').fadeOut(300); // Oculta após 5 segundos
             }, 5000); // corrigido: 500000 seria 8 minutos
         });
+
+        function mostrarNotificacao(corpo) {
+
+            console.log("notificaocao")
+
+            // Verifica se o navegador suporta
+            if (!('Notification' in window)) {
+                alert('Este navegador não suporta notificações.');
+                return;
+            }
+
+            // Verifica permissão
+            if (Notification.permission === 'granted') {
+
+                 console.log("notificaocao aqui")
+                new Notification('Atenção', {
+                    body: corpo,
+                    icon: '/img/icon-256.png' // seu ícone
+                });
+            } else if (Notification.permission !== 'denied') {
+
+                  console.log("notificaocao new aqui")
+                // Pede permissão
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('Atenção', {
+                            body: corpo,
+                            icon: '/img/icon-256.png'
+                        });
+                    }
+                });
+            }
+        }
+
 
         function aqui() {
             alert(soma(2, 3))
