@@ -67,6 +67,10 @@
             cursor: pointer;
         }
 
+        .menu-title {
+            margin-left: 20px !important;
+        }
+
         .menu-lateral {
             width: 320px;
             background-color: #2B2726;
@@ -149,6 +153,37 @@
             background-color: #0A516D;
         }
 
+        /* Loader centralizado na tela */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* fundo branco com 50% de transparência */
+            z-index: 2000;
+            display: none;
+            /* começa invisível */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-ring {
+            width: 64px;
+            height: 64px;
+            border: 6px solid #BACCA4;
+            border-top: 6px solid #0A516D;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
 
 
         /* Telas grandes - desktop (769px em diante)*/
@@ -212,13 +247,22 @@
     <!-- Fundo escurecido -->
     <div class="overlay"></div>
 
+    <!-- Loader da pagina -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+    </div>
+
     <!-- Conteúdo principal -->
     <main>
-        <h2>Bem-vindo! Versao 2.4</h2>
+        <h2>Bem-vindo! Versao 2.5</h2>
         <p>Agora com a paleta personalizada que você escolheu. O menu lateral ainda funciona como slide.</p>
+
         <a href="#" class="botao">Ação Principal</a>
+        <a class="botao" id="btnLoader">Loader</a>
+
 
         <button type="button" onclick="aqui()">soma</button>
+        
     </main>
 
     <!-- jQuery + interações -->
@@ -282,6 +326,19 @@
                     console.log('❌ Erro ao registrar SW:', err);
                 });
         }
+
+        $('#btnLoader').on('click', function () {
+            console.log('click');
+
+            $('#loader')
+                .css('display', 'flex') // força flex antes de animar
+                .hide()                 // esconde imediatamente (caso visível)
+                .fadeIn(200);           // anima a entrada
+
+            setTimeout(() => {
+                $('#loader').fadeOut(300); // Oculta após 5 segundos
+            }, 5000); // corrigido: 500000 seria 8 minutos
+        });
 
         function aqui() {
             alert(soma(2, 3))
