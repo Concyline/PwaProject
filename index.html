@@ -254,12 +254,12 @@
 
     <!-- Conteúdo principal -->
     <main>
-        <h2>Bem-vindo! Versao 2.7</h2>
+        <h2>Bem-vindo! Versao 2.8</h2>
         <p>Agora com a paleta personalizada que você escolheu. O menu lateral ainda funciona como slide.</p>
 
         <a href="#" class="botao">Ação Principal</a>
         <a class="botao" id="btnLoader">Loader</a>
-        <a class="botao" onclick="mostrarNotificacao('Um teste de notificação')">Notificação</a>
+        <a class="botao" id="btnNotifica">Notificação</a>
 
 
         <button type="button" onclick="aqui()">soma</button>
@@ -341,9 +341,15 @@
             }, 5000); // corrigido: 500000 seria 8 minutos
         });
 
-        function mostrarNotificacao(corpo) {
+        document.getElementById('btnNotifica').addEventListener('click', function (e) {
+            e.preventDefault(); // Impede navegação
 
-            console.log("notificaocao")
+                    console.log("clique novo novo")
+
+            mostrarNotificacao('Mensagem acionada por clique');
+        });
+
+        function mostrarNotificacao(corpo) {
 
             // Verifica se o navegador suporta
             if (!('Notification' in window)) {
@@ -354,14 +360,12 @@
             // Verifica permissão
             if (Notification.permission === 'granted') {
 
-                 console.log("notificaocao aqui")
                 new Notification('Atenção', {
                     body: corpo,
                     icon: '/img/icon-256.png' // seu ícone
                 });
             } else if (Notification.permission !== 'denied') {
 
-                  console.log("notificaocao new aqui")
                 // Pede permissão
                 Notification.requestPermission().then(permission => {
                     if (permission === 'granted') {
