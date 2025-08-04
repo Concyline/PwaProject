@@ -195,15 +195,14 @@
             }
         }
             */
-            
+
 
         /* Telas médias - tablet (481px a 768px)  */
         @media (min-width: 481px) and (max-width: 768px) {}
-       
+
 
         /* Telas pequenas - celular (até 480px)  */
         @media (max-width: 480px) {}
-       
     </style>
 </head>
 
@@ -235,7 +234,7 @@
 
     <!-- Conteúdo principal -->
     <main>
-        <h2>Bem-vindo! Versao 2.2</h2>
+        <h2>Bem-vindo! Versao 2.3</h2>
         <p>Agora com a paleta personalizada que você escolheu. O menu lateral ainda funciona como slide.</p>
         <a href="#" class="botao">Ação Principal</a>
 
@@ -282,10 +281,34 @@
             });
         });
 
+        /*
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
                 .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
                 .catch(err => console.log('❌ Erro ao registrar SW:', err));
+        }
+                */
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => {
+                    console.log('✅ Service Worker registrado:', reg.scope);
+
+                    // Verifica se há uma nova versão do SW sendo instalada
+                    reg.onupdatefound = () => {
+                        const newWorker = reg.installing;
+
+                        newWorker.onstatechange = () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('⚠️ Nova versão detectada. Recarregando...');
+                                window.location.reload(); // Atualiza automaticamente
+                            }
+                        };
+                    };
+                })
+                .catch(err => {
+                    console.log('❌ Erro ao registrar SW:', err);
+                });
         }
 
         function aqui() {
